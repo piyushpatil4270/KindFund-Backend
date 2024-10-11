@@ -43,7 +43,7 @@ const signUp = async (req, res, next) => {
   try {
     const result = await handleSignup(req.body);
     if (result === 1)
-      return res.status(200).json("User with email already exist");
+      return res.status(400).json("User with email already exist");
     res.status(202).json("User registered successfully");
     await transaction.commit();
   } catch (error) {
@@ -57,8 +57,8 @@ const signIn = async (req, res, next) => {
   const transaction = await db.transaction();
   try {
     const result = await handleSignIn(req.body);
-    if (result === 1) return res.status(200).json("Enter valid email");
-    else if (result === 2) return res.status(201).json("Incorrect password");
+    if (result === 1) return res.status(400).json("Enter valid email");
+    else if (result === 2) return res.status(401).json("Incorrect password");
     res.status(202).json(result);
     await transaction.commit();
   } catch (error) {
